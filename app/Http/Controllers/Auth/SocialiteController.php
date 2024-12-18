@@ -17,7 +17,6 @@ class SocialiteController extends Controller
     public function redirectToProvider($provider)
     {
         try {
-            // Redirect to the provider's OAuth page
             return Socialite::driver($provider)->stateless()->redirect();
         } catch (\Exception $e) {
             return response()->json(['error' => 'Unable to redirect to the provider.'], 500);
@@ -33,7 +32,6 @@ class SocialiteController extends Controller
     public function handleProviderCallback($provider)
     {
         try {
-            // Get user data from provider
             $socialUser = Socialite::driver($provider)->stateless()->user();
 
             // Find or create the user in the database
@@ -47,7 +45,6 @@ class SocialiteController extends Controller
                 ]
             );
 
-            // Generate a token for the user (assuming you are using Laravel Sanctum for API authentication)
             $token = $user->createToken('SocialiteLogin')->plainTextToken;
 
             return response()->json(['token' => $token, 'user' => $user]);
