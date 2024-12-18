@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class SocialiteController extends Controller
 {
@@ -30,26 +31,28 @@ class SocialiteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function handleProviderCallback($provider)
-    {
-        try {
-            $socialUser = Socialite::driver($provider)->stateless()->user();
+{
+    try {
+        $socialUser = Socialite::driver($provider)->stateless()->user();
 
-            // Find or create the user in the database
-            $user = User::firstOrCreate(
-                ['email' => $socialUser->getEmail()],
-                [
-                    'name' => $socialUser->getName(),
-                    'provider' => $provider,
-                    'provider_id' => $socialUser->getId(),
-                    'avatar' => $socialUser->getAvatar(),
-                ]
-            );
+        // Find or create the user in the database
+        $user = User::firstOrCreate(
+            ['email' => $socialUser->getEmail()],
+            [
+                'name' => $socialUser->getName(),
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $socialUser->getAvatar(),
+            ]
+        );
 
-            $token = $user->createToken('SocialiteLogin')->plainTextToken;
+        $token = $user->createToken('SocialiteLogin')->plainTextToken;
 
-            return response()->json(['token' => $token, 'user' => $user]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Authentication failed.'], 500);
-        }
+        return response()->json(['token' => $token, 'user' => $user]);
+    } catch (\Exception $e) {
+        Log::error('Socialite login error: ' . $e->getMessage());
+        return response()->json(['error' => 'Authentication failed.'], 500);
     }
+}
+
 }
