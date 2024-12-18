@@ -12,6 +12,7 @@ Route::get('/home', function () {
     return 'Welcome Home!';
 })->middleware('auth');
 
-Route::get('auth/{provider}/redirect', [SocialiteController::class, 'redirectToProvider']);
-Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback']);
-
+Route::prefix('auth/{provider}')->group(function () {
+    Route::get('/redirect', [SocialiteController::class, 'redirectToProvider']);
+    Route::get('/callback', [SocialiteController::class, 'handleProviderCallback']);
+});
