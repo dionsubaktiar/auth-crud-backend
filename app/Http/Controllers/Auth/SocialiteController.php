@@ -8,21 +8,32 @@ use App\Models\User;
 
 class SocialiteController extends Controller
 {
+    /**
+     * Redirect the user to the authentication page of the provider.
+     *
+     * @param string $provider
+     * @return \Illuminate\Http\Response
+     */
     public function redirectToProvider($provider)
     {
         try {
-            // Generate the redirect URL for the provider
-            $url = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-            return response()->json(['url' => $url]);
+            // Redirect to the provider's OAuth page
+            return Socialite::driver($provider)->stateless()->redirect();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Unable to generate redirect URL'], 500);
+            return response()->json(['error' => 'Unable to redirect to the provider.'], 500);
         }
     }
 
+    /**
+     * Handle the provider callback.
+     *
+     * @param string $provider
+     * @return \Illuminate\Http\Response
+     */
     public function handleProviderCallback($provider)
     {
         try {
-            // Retrieve user info from the provider
+            // Get user data from provider
             $socialUser = Socialite::driver($provider)->stateless()->user();
 
             // Find or create the user in the database
@@ -36,12 +47,12 @@ class SocialiteController extends Controller
                 ]
             );
 
-            // Generate a personal access token for the authenticated user
+            // Generate a token for the user (assuming you are using Laravel Sanctum for API authentication)
             $token = $user->createToken('SocialiteLogin')->plainTextToken;
 
             return response()->json(['token' => $token, 'user' => $user]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Authentication failed'], 500);
+            return response()->json(['error' => 'Authentication failed.'], 500);
         }
     }
 }
