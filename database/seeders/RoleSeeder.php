@@ -27,7 +27,7 @@ class RoleSeeder extends Seeder
 
 
     $admin->givePermissionTo([$viewArticles, $editArticles, $createArticles, $deleteArticles]);
-    $user->givePermissionTo([$viewArticles]);
+    $user->givePermissionTo([$viewArticles,$createArticles]);
 
 
     $adminUser = User::create([
