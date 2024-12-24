@@ -30,22 +30,23 @@ class DataController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $today = Carbon::today()->toDateString();
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'article' => 'required|string',
-            'tanggal' => $today,
-            'user_id' => 'required|exists:users,id',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'title' => 'required|string|max:255',
+        'article' => 'required|string',
+        'user_id' => 'required|exists:users,id',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $data = Data::create($request->all());
-        return response()->json(['message' => 'Data created successfully.', 'data' => $data], 201);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    // Automatically set 'tanggal' to today's date
+    $data = Data::create(array_merge($request->all(), ['tanggal' => Carbon::today()->toDateString()]));
+
+    return response()->json(['message' => 'Data created successfully.', 'data' => $data], 201);
+}
+
 
     /**
      * Display the specified resource.
