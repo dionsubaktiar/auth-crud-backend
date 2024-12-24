@@ -30,7 +30,7 @@ class DataController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
+    {
     $validator = Validator::make($request->all(), [
         'title' => 'required|string|max:255',
         'article' => 'required|string',
@@ -41,11 +41,10 @@ class DataController extends Controller
         return response()->json(['errors' => $validator->errors()], 422);
     }
 
-    // Automatically set 'tanggal' to today's date
     $data = Data::create(array_merge($request->all(), ['tanggal' => Carbon::today()->toDateString()]));
 
     return response()->json(['message' => 'Data created successfully.', 'data' => $data], 201);
-}
+    }
 
 
     /**
