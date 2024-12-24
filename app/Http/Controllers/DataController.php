@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Data; // Assuming the model is named `Data`
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
@@ -30,10 +31,11 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
+        $today = Carbon::today()->toDateString();
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'article' => 'required|string',
-            'tanggal' => 'required|date',
+            'tanggal' => $today,
             'user_id' => 'required|exists:users,id',
         ]);
 
