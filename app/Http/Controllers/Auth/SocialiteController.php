@@ -31,28 +31,31 @@ class SocialiteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function handleProviderCallback($provider)
-{
-    try {
-        $socialUser = Socialite::driver($provider)->stateless()->user();
+    {
+        try {
+            $socialUser = Socialite::driver($provider)->stateless()->user();
 
-        // Find or create the user in the database
-        $user = User::firstOrCreate(
-            ['email' => $socialUser->getEmail()],
-            [
-                'name' => $socialUser->getName(),
-                'provider' => $provider,
-                'provider_id' => $socialUser->getId(),
-                'avatar' => $socialUser->getAvatar(),
-            ]
-        );
+            // Find or create the user in the database
+            $user = User::firstOrCreate(
+                ['email' => $socialUser->getEmail()],
+                [
+                    'name' => $socialUser->getName(),
+                    'provider' => $provider,
+                    'provider_id' => $socialUser->getId(),
+                    'avatar' => $socialUser->getAvatar(),
+                ]
+            );
 
-        $token = $user->createToken('SocialiteLogin')->plainTextToken;
+            // Generate token
+            $token = $user->createToken('SocialiteLogin')->plainTextToken;
 
-        return response()->json(['token' => $token, 'user' => $user]);
-    } catch (\Exception $e) {
-        Log::error('Socialite login error: ' . $e->getMessage());
-        return response()->json(['error' => 'Authentication failed.'], 500);
+            // Redirect back to the frontend with the token
+            $frontendUrl = 'https://dionsubaktiar.vercel.app/auth-crud/callback';
+            return redirect()->to("{$frontendUrl}?token={$token}");
+        } catch (\Exception $e) {
+            Log::error('Socialite login error: ' . $e->getMessage());
+            return redirect()->to(config('app.frontend_url') . '/auth-crud/login?error=oauth_failed');
+        }
     }
-}
 
 }
