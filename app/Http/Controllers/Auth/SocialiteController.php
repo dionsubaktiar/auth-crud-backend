@@ -54,7 +54,7 @@ class SocialiteController extends Controller
             return redirect()->to("{$frontendUrl}?token={$token}");
         } catch (\Exception $e) {
             Log::error('Socialite login error: ' . $e->getMessage());
-            return redirect()->to(config('app.frontend_url') . '/auth-crud/login?error=oauth_failed');
+            return redirect()->to('https://dionsubaktiar.vercel.app/auth-crud/login?error=oauth_failed');
         }
     }
 
