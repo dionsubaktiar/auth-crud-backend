@@ -25,4 +25,6 @@ Route::prefix('auth/{provider}')->group(function () {
     Route::get('/callback', [SocialiteController::class, 'handleProviderCallback']);
 });
 
-Route::apiResource('article',DataController::class);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('article', DataController::class);
+});

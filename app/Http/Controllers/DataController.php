@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Data; // Assuming the model is named `Data`
+use App\Models\Data;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controller;
 
 class DataController extends Controller
 {
