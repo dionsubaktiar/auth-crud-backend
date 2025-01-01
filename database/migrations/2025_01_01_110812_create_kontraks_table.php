@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('otr');
             $table->integer('dp');
             $table->integer('durasi');
+            $table->float('bunga');
             $table->date('tgl_mulai');
             $table->timestamps();
         });

@@ -54,6 +54,7 @@ class IMSController extends Controller
             'otr'=>'required|numeric',
             'dp'=>'required|numeric',
             'durasi'=>'required|numeric',
+            'bunga'=>'required|numeric',
             'tgl_mulai'=>'required|date'
         ]);
         if ($validator->fails()) {
@@ -64,11 +65,11 @@ class IMSController extends Controller
         $otr = $request->otr;
         $dp = $request->dp;
         $durasi = $request->durasi;
+        $bunga = $request->bunga;
         $tanggal = Carbon::parse($request->tgl_mulai);
         $financedAmount = $otr - $dp;
 
-        if($durasi<=12){
-            $angsuran = ($financedAmount+(12/100*$financedAmount))/$durasi;
+        $angsuran = ($financedAmount+($bunga/100*$financedAmount))/$durasi;
             for ($i = 1; $i <= $durasi; $i++) {
                 angsuran::create([
                     'kontrak_id' => $data->kontrak_no,
@@ -77,28 +78,6 @@ class IMSController extends Controller
                     'tanggal_jatuh_tempo' => $tanggal->copy()->addMonths($i - 1)->toDateString(),
                 ]);
             }
-        }
-        elseif($durasi>=12 && $durasi<=24){
-            $angsuran = ($financedAmount+(14/100*$financedAmount))/$durasi;
-            for ($i = 1; $i <= $durasi; $i++) {
-                angsuran::create([
-                    'kontrak_id' => $data->kontrak_no,
-                    'angsuran_ke' => $i,
-                    'nominal' => round($angsuran, 2),
-                    'tanggal_jatuh_tempo' => $tanggal->copy()->addMonths($i - 1)->toDateString(),
-                ]);
-            }
-        }else{
-            $angsuran = ($financedAmount+(16.5/100*$financedAmount))/$durasi;
-            for ($i = 1; $i <= $durasi; $i++) {
-                angsuran::create([
-                    'kontrak_id' => $data->kontrak_no,
-                    'angsuran_ke' => $i,
-                    'nominal' => round($angsuran, 2),
-                    'tanggal_jatuh_tempo' => $tanggal->copy()->addMonths($i - 1)->toDateString(),
-                ]);
-            }
-        }
         return response()->json(['message' => 'Kontrak and Angsuran created successfully.','data_kontrak'=>$data], 201);
     }
 
