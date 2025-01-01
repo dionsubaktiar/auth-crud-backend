@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\TraditionalAuthController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\IMSController;
 use Database\Seeders\ArticleSeeder;
 
 Route::post('/register', [TraditionalAuthController::class, 'register']);
@@ -28,3 +29,5 @@ Route::prefix('auth/{provider}')->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('article', DataController::class);
 });
+
+Route::apiResource('ims',IMSController::class);
