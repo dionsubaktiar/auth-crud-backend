@@ -16,7 +16,7 @@ class DataController extends Controller
     public function index()
     {
         $data = Data::with('user')->paginate(10); // Eager load related user
-        return response()->json(['data' => $data, 'status'=>"Success"], 200);
+        return response()->json(['article_data' => $data, 'status'=>"Success"], 200);
     }
 
     /**
