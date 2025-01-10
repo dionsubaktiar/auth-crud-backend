@@ -10,7 +10,7 @@ class PinjamanController extends Controller
 {
     public function index()
     {
-        $pinjaman = Pinjaman::with('kendaraan', 'konsumen')->get();
+        $pinjaman = pinjaman::with('kendaraan', 'konsumen')->get();
 
         return response()->json($pinjaman);
     }

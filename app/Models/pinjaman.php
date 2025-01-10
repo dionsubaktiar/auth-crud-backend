@@ -18,11 +18,11 @@ class pinjaman extends Model
     // Relationships
     public function konsumen()
     {
-        return $this->belongsTo(Konsumen::class, 'id_user');
+        return $this->belongsTo(konsumen::class, 'id_user');
     }
 
     public function kendaraan()
     {
-        return $this->belongsTo(Kendaraan::class, 'id_kendaraan');
+        return $this->belongsTo(kendaraan::class, 'id_kendaraan');
     }
 }

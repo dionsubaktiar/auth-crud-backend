@@ -24,7 +24,7 @@ class konsumen extends Model
     // Relationships
     public function pinjaman()
     {
-        return $this->hasMany(Pinjaman::class, 'id_user');
+        return $this->hasMany(pinjaman::class, 'id_user');
     }
 }
 
