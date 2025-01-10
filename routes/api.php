@@ -6,6 +6,9 @@ use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\TraditionalAuthController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\IMSController;
+use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\KonsumenController;
+use App\Http\Controllers\PinjamanController;
 use Database\Seeders\ArticleSeeder;
 
 Route::post('/register', [TraditionalAuthController::class, 'register']);
@@ -31,3 +34,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::apiResource('ims',IMSController::class);
+
+Route::post('/bcaregister', [KonsumenController::class, 'register']);
+Route::post('/bcalogin', [KonsumenController::class, 'login']);
+Route::middleware('auth:sanctum')->get('/bcame', [KonsumenController::class, 'me']);
+Route::middleware('auth:sanctum')->post('/bcalogout', [KonsumenController::class, 'logout']);
+
+Route::resource('kendaraan', KendaraanController::class);
+Route::resource('pinjaman', PinjamanController::class);
+
