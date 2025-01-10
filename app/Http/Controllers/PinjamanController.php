@@ -10,7 +10,9 @@ class PinjamanController extends Controller
 {
     public function index()
     {
-        return pinjaman::all();
+        $pinjaman = Pinjaman::with('kendaraan', 'konsumen')->get();
+
+        return response()->json($pinjaman);
     }
 
     public function store(Request $request)

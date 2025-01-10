@@ -75,7 +75,7 @@ class KonsumenController extends Controller
             'nik' => 'required|string|max:16',
             'tanggal_lahir' => 'required|date',
             'status_perkawinan' => 'required|string|max:50',
-            'data_pasangan' => 'nullable|string|max:255',  // Nullable field
+            'data_pasangan' => 'nullable|string|max:255',
         ]);
 
         // Create the new Konsumen record
