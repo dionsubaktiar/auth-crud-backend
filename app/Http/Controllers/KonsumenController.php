@@ -13,7 +13,7 @@ class KonsumenController extends Controller
      */
     public function index()
     {
-        //
+        return konsumen::all();
     }
 
     /**

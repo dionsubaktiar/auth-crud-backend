@@ -40,6 +40,7 @@ Route::post('/bcalogin', [KonsumenController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/bcame', [KonsumenController::class, 'me']);
 Route::middleware('auth:sanctum')->post('/bcalogout', [KonsumenController::class, 'logout']);
 
+Route::resource('konsumen',KonsumenController::class);
 Route::resource('kendaraan', KendaraanController::class);
 Route::resource('pinjaman', PinjamanController::class);
 
