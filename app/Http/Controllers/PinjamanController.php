@@ -20,7 +20,7 @@ class PinjamanController extends Controller
             'asuransi' => 'required|numeric',
             'down_payment' => 'required|numeric',
             'tenor' => 'required|integer',
-            'id_kendaraan' => 'required|exists:kendaraans,id',
+            'id_kendaraan' => 'required|exists:kendaraan,id',
             'id_user' => 'required|exists:konsumen,id',
         ]);
 
