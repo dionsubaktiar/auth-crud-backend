@@ -57,7 +57,7 @@ class PinjamanController extends Controller
 
     public function show($id)
     {
-        return pinjaman::findOrFail($id);
+        return pinjaman::with('konsumen','kendaraan')->findOrFail($id);
     }
 
     public function update(Request $request, $id)
