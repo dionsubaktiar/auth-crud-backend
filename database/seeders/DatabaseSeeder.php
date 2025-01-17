@@ -18,5 +18,12 @@ class DatabaseSeeder extends Seeder
         $this->call(ArticleSeeder::class);
         $this->call(KendaraanSeeder::class);
         $this->call(KonsumenSeeder::class);
+        $this->call([
+            PartSeeder::class,
+            ServicePackageSeeder::class,
+            ItemSeeder::class,
+            CustomerSeeder::class,
+            UnitSeeder::class
+        ]);
     }
 }
