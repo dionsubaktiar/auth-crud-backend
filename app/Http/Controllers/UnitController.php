@@ -90,7 +90,6 @@ class UnitController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'nopol' => 'required|string|unique:units,nopol',
             'tipe' => 'required|string',
             'no_rangka' => 'required|string',
             'no_mesin' => 'required|string',
