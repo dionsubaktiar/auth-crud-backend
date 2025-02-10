@@ -61,10 +61,12 @@ class UnitController extends Controller
      */
     public function show(string $id)
     {
-        $data = unit::find($id)->with('customers')->get();
+        $data = unit::find($id)->with('customers')->first();
+
         if (!$data) {
             return response()->json(['message' => 'Unit data cant be found.'], 404);
         }
+
         return response()->json(['data' => $data], 200);
     }
 
