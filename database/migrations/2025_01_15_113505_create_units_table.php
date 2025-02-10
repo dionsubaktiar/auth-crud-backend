@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('japo_kir');
             $table->date('japo_pajak');
             $table->date('japo_stnk');
-            $table->date('japo_kontrak');
+            $table->date('japo_kontrak')->nullable();
             $table->boolean('status');
             $table->foreignId('id_customer')->constrained('customers');
             $table->timestamps();

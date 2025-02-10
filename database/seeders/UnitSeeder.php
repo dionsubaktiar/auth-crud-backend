@@ -18,22 +18,22 @@ class UnitSeeder extends Seeder
         $customers = customer::all(); // Get all customers
 
         // Create 10 units
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
             $customer = $customers->random(); // Randomly select a customer
 
             unit::create([
-                'nopol' => strtoupper($faker->bothify('??-###-???')), // Random vehicle number plate
-                'tipe' => $faker->randomElement(['Truck', 'Bus', 'Pickup']), // Random type (e.g., SUV, Sedan)
-                'no_rangka' => strtoupper($faker->lexify('????????????????????')), // Random chassis number
-                'no_mesin' => strtoupper($faker->lexify('???????????????')), // Random engine number
-                'driver' => $faker->name, // Random driver name
-                'tahun' => $faker->year, // Random year
-                'japo_kir' => $faker->date, // Random KIR date
-                'japo_pajak' => $faker->date, // Random tax date
-                'japo_stnk' => $faker->date, // Random STNK date
-                'japo_kontrak' => $faker->date, // Random contract date
-                'status' => $faker->boolean, // Random status (active/inactive)
-                'id_customer' => $customer->id, // Link to random customer
+                'nopol' => strtoupper($faker->bothify('??-###-???')),
+                'tipe' => $faker->randomElement(['Truck', 'Bus', 'Pickup']),
+                'no_rangka' => strtoupper($faker->lexify('????????????????????')),
+                'no_mesin' => strtoupper($faker->lexify('???????????????')),
+                'driver' => $faker->name,
+                'tahun' => $faker->year,
+                'japo_kir' => $faker->date,
+                'japo_pajak' => $faker->date,
+                'japo_stnk' => $faker->date,
+                'status' => $status = $faker->boolean, // Random boolean
+                'japo_kontrak' => $status ? $faker->date : null, // NULL jika status false
+                'id_customer' => $customer->id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
