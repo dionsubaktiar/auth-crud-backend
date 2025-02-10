@@ -43,8 +43,8 @@ class UnitController extends Controller
             'japo_kir' => 'required|date',
             'japo_pajak' => 'required|date',
             'japo_stnk' => 'required|date',
-            'japo_kontrak' => 'required|date',
-            'status' => 'required|boolean',
+            'japo_kontrak' => 'nullable|date',
+            'status' => 'nullable|boolean',
             'id_customer' => 'required|numeric'
         ]);
 
@@ -98,8 +98,8 @@ class UnitController extends Controller
             'japo_kir' => 'required|date',
             'japo_pajak' => 'required|date',
             'japo_stnk' => 'required|date',
-            'japo_kontrak' => 'required|date',
-            'status' => 'required|boolean',
+            'japo_kontrak' => 'nullable|date',
+            'status' => 'nullable|boolean',
             'id_customer' => 'required|numeric'
         ]);
 
