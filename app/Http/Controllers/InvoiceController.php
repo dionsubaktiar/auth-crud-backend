@@ -148,7 +148,7 @@ class InvoiceController extends Controller
      */
     public function show(string $id)
     {
-        $data = invoice::with('units', 'packages')->find($id);
+        $data = invoice::with('units.customers', 'packages')->find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Invoice data can’t be found'], 404);
