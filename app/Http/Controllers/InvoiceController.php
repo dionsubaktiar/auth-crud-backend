@@ -80,7 +80,7 @@ class InvoiceController extends Controller
             'tanggal' => 'required|date',
             'id_unit' => 'required|numeric',
             'id_package' => 'sometimes|numeric',
-            'id_part' => 'sometimes|string',
+            'id_part' => 'sometimes',
             'harga' => 'sometimes|numeric',
         ]);
 
