@@ -155,12 +155,10 @@ class InvoiceController extends Controller
             return response()->json(['message' => 'Invoice data cant be found'], 404);
         }
 
-        if (!$package) {
-            return response()->json(['message' => 'Package data cant be found'], 404);
+        if ($package) {
+            $items = item::where('kode_packages', '=', $package->kode_packages)->get();
+            $data->package_items = $items;
         }
-
-        $items = item::where('kode_packages', '=', $package->kode_packages)->get();
-        $data->package_items = $items;
 
         // Decode the id_part JSON
         $idParts = json_decode($data->id_part, true);
