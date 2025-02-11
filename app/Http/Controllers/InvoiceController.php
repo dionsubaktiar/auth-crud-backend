@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customer;
 use App\Models\invoice;
 use App\Models\item;
 use App\Models\part;
@@ -10,8 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use function Pest\Laravel\json;
-
 class InvoiceController extends Controller
 {
     /**
@@ -19,10 +18,11 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $data = invoice::with('units', 'packages')->paginate(15);
+        $data = invoice::with('units.customers', 'packages')->paginate(15);
         return response()->json([
             'messages' => 'Invoice data fetched successfully',
-            'data' => $data
+            'data' => $data,
+            // 'customers' => $customer
         ], 200);
     }
 
@@ -149,35 +149,34 @@ class InvoiceController extends Controller
     public function show(string $id)
     {
         $data = invoice::with('units', 'packages')->find($id);
-        $package = servicepackage::find($data->id_package);
 
         if (!$data) {
-            return response()->json(['message' => 'Invoice data cant be found'], 404);
+            return response()->json(['message' => 'Invoice data can’t be found'], 404);
         }
 
+        // Fetch service package if it exists
+        $package = servicepackage::find($data->id_package);
         if ($package) {
-            $items = item::where('kode_packages', '=', $package->kode_packages)->get();
+            $items = item::where('kode_packages', $package->kode_packages)->get();
             $data->package_items = $items;
         }
 
         // Decode the id_part JSON
         $idParts = json_decode($data->id_part, true);
+        $partsDetails = [];
 
         // Find each part and attach its details
-        $partsDetails = [];
         foreach ($idParts as $part) {
             $partDetails = part::find($part['id_part']);
             if (!$partDetails) {
-                return response()->json(['message' => "Part with ID {$partDetails['id_part']} not found"], 404);
+                return response()->json(['message' => "Part with ID {$part['id_part']} not found"], 404);
             }
-            if ($partDetails) {
-                $partsDetails[] = [
-                    'id_part' => $partDetails->id,
-                    'name' => $partDetails->nama_barang,
-                    'quantity' => $part['qty'],
-                    'total_price' => $part['harga_key']
-                ];
-            }
+            $partsDetails[] = [
+                'id_part' => $partDetails->id,
+                'name' => $partDetails->nama_barang,
+                'quantity' => $part['qty'],
+                'total_price' => ($partDetails->harga * $part['qty']) + $partDetails->jasa // Assuming `harga_barang` exists
+            ];
         }
 
         // Add parts details to the response
