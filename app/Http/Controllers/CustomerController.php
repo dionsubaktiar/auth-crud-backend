@@ -20,6 +20,15 @@ class CustomerController extends Controller
         ], 200);
     }
 
+    public function getAll()
+    {
+        $data = customer::select('id', 'nama_perusahaan')->get();
+        return response()->json([
+            'message' => 'Customers data fetched successfully',
+            'data' => $data
+        ], 200);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

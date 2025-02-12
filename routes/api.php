@@ -49,8 +49,11 @@ Route::resource('kendaraan', KendaraanController::class);
 Route::resource('pinjaman', PinjamanController::class);
 
 Route::resource('customer', CustomerController::class);
+Route::get('getcustomer', [CustomerController::class, 'getAll']);
 Route::resource('unit', UnitController::class);
+Route::get('getunit', [UnitController::class, 'getAll']);
 Route::resource('part', PartController::class);
+Route::get('getparts', [PartController::class, 'getAll']);
 Route::resource('invoice', InvoiceController::class);
 Route::resource('packages', PackageController::class);
 Route::put('/invoice/{id}/accept-spk', [InvoiceController::class, 'accept_status_spk']);

@@ -20,6 +20,16 @@ class UnitController extends Controller
         ], 200);
     }
 
+    public function getAll()
+    {
+        $data = unit::select('id', 'nopol')->get();
+        return response()->json([
+            'messages' => 'Unit data fetched successfully',
+            'data' => $data,
+        ], 200);
+        // return part::all();
+    }
+
     /**
      * Show the form for creating a new resource.
      */

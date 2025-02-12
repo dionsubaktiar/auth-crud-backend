@@ -15,7 +15,17 @@ class PartController extends Controller
     {
         $data = part::paginate(20);
         return response()->json([
-            'messages' => 'Invoice data fetched successfully',
+            'messages' => 'Part data fetched successfully',
+            'data' => $data,
+        ], 200);
+        // return part::all();
+    }
+
+    public function getAll()
+    {
+        $data = part::select('id', 'nama_barang')->get();
+        return response()->json([
+            'messages' => 'Part data fetched successfully',
             'data' => $data,
         ], 200);
         // return part::all();
