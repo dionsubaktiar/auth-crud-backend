@@ -13,7 +13,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $data = customer::all()->paginate(15);
+        $data = customer::paginate(15);
         return response()->json([
             'message' => 'Customers data fetched successfully',
             'data' => $data

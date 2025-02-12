@@ -13,7 +13,7 @@ class PartController extends Controller
      */
     public function index()
     {
-        $data = part::all()->paginate(20);
+        $data = part::paginate(20);
         return response()->json([
             'messages' => 'Invoice data fetched successfully',
             'data' => $data,
