@@ -23,7 +23,7 @@ class PartController extends Controller
 
     public function getAll()
     {
-        $data = part::select('id', 'nama_barang', 'kode_barang')->orderBy('id')->get();
+        $data = part::select('id', 'nama_barang', 'part_number')->orderBy('id')->get();
         return response()->json([
             'messages' => 'Part data fetched successfully',
             'data' => $data,
