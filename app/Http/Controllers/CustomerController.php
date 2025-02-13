@@ -22,7 +22,7 @@ class CustomerController extends Controller
 
     public function getAll()
     {
-        $data = customer::select('id', 'nama_perusahaan')->get();
+        $data = customer::select('id', 'nama_perusahaan')->orderBy('id')->get();
         return response()->json([
             'message' => 'Customers data fetched successfully',
             'data' => $data

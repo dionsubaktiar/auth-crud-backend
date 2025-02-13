@@ -22,7 +22,7 @@ class UnitController extends Controller
 
     public function getAll()
     {
-        $data = unit::select('id', 'nopol')->get();
+        $data = unit::select('id', 'nopol')->orderBy('id')->get();
         return response()->json([
             'messages' => 'Unit data fetched successfully',
             'data' => $data,
