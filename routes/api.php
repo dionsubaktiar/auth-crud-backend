@@ -14,6 +14,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\UnitController;
+use App\Http\Middleware\Admin;
 
 Route::post('/register', [TraditionalAuthController::class, 'register']);
 Route::post('/login', [TraditionalAuthController::class, 'login']);
@@ -24,18 +25,26 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/home', function () {
-    return 'Welcome Home!';
-})->middleware('auth');
+// Route::get('/home', function () {
+//     return 'Welcome Home!';
+// })->middleware('auth');
 
 Route::prefix('auth/{provider}')->group(function () {
     Route::get('/redirect', [SocialiteController::class, 'redirectToProvider']);
     Route::get('/callback', [SocialiteController::class, 'handleProviderCallback']);
 });
 
+Route::middleware(['auth:sanctum', Admin::class])->group(function () {
+    Route::delete('/article/{id}', [DataController::class, 'destroy']);
+});
+
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('article', DataController::class);
 });
+
+
+
 
 Route::apiResource('ims', IMSController::class);
 
