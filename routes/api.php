@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\TraditionalAuthController;
+use App\Http\Controllers\BooksController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\IMSController;
@@ -15,7 +16,7 @@ use App\Http\Controllers\PartController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\BooksController;
+
 use App\Http\Middleware\Admin;
 
 Route::post('/register', [TraditionalAuthController::class, 'register']);
@@ -74,4 +75,5 @@ Route::put('/invoice/{id}/invoice-clear', [InvoiceController::class, 'set_invoic
 Route::post('/orbiz/login', [LoginController::class, 'login']);
 Route::post('/orbiz/me', [LoginController::class, 'me']);
 Route::resource('books', BooksController::class);
+Route::put('/books/likes/{id}', [BooksController::class, 'likes']);
 Route::post('/books/search', [BooksController::class, 'search']);
