@@ -14,6 +14,8 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\BooksController;
 use App\Http\Middleware\Admin;
 
 Route::post('/register', [TraditionalAuthController::class, 'register']);
@@ -69,3 +71,7 @@ Route::put('/invoice/{id}/accept-spk', [InvoiceController::class, 'accept_status
 Route::put('/invoice/{id}/cancel', [InvoiceController::class, 'cancel_status']);
 Route::put('/invoice/{id}/spk-done', [InvoiceController::class, 'set_spk_done']);
 Route::put('/invoice/{id}/invoice-clear', [InvoiceController::class, 'set_invoice_clear']);
+Route::post('/orbiz/login', [LoginController::class, 'login']);
+Route::post('/orbiz/me', [LoginController::class, 'me']);
+Route::resource('books', BooksController::class);
+Route::post('/books/search', [BooksController::class, 'search']);
