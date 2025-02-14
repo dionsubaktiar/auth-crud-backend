@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
@@ -22,7 +23,9 @@ class CustomerController extends Controller
 
     public function getAll()
     {
-        $data = customer::select('id', 'nama_perusahaan')->orderBy('id')->get();
+        $data = Cache::remember('customers', 60, function () {
+            return customer::select('id', 'nama_perusahaan')->orderBy('id')->get();
+        });
         return response()->json([
             'message' => 'Customers data fetched successfully',
             'data' => $data
@@ -54,6 +57,7 @@ class CustomerController extends Controller
         }
 
         $data = customer::create($request->all());
+        Cache::forget('customers');
 
         return response()->json(['message' => 'Customer data registered successfully.', 'data' => $data], 201);
     }
@@ -100,6 +104,7 @@ class CustomerController extends Controller
         }
 
         $data->update($request->all());
+        Cache::forget('customers');
         return response()->json(['message' => 'Customer data updated successfully.', 'data' => $data], 200);
     }
 
@@ -115,6 +120,7 @@ class CustomerController extends Controller
         }
 
         $data->delete();
+        Cache::forget('customers');
         return response()->json(['message' => 'Customer data deleted successfully.'], 200);
     }
 }

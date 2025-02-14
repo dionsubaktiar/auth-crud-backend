@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\part;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class PartController extends Controller
@@ -18,12 +19,13 @@ class PartController extends Controller
             'messages' => 'Part data fetched successfully',
             'data' => $data,
         ], 200);
-        // return part::all();
     }
 
     public function getAll()
     {
-        $data = part::select('id', 'nama_barang', 'part_number')->orderBy('id')->get();
+        $data = Cache::remember('parts', 60, function () {
+            return part::select('id', 'nama_barang', 'part_number')->orderBy('id')->get();
+        });
         return response()->json([
             'messages' => 'Part data fetched successfully',
             'data' => $data,
@@ -57,6 +59,7 @@ class PartController extends Controller
         }
 
         $data = part::create($request->all());
+        Cache::forget('parts');
         return response()->json(['message' => 'Part data created successfully', 201]);
     }
 
@@ -101,6 +104,7 @@ class PartController extends Controller
         }
 
         $data->update($request->all());
+        Cache::forget('parts');
         return response()->json([
             'message' => 'Part data updated successfully',
             'data' => $data
@@ -118,6 +122,7 @@ class PartController extends Controller
             return response()->json(['message' => 'Part data cant be found'], 404);
         }
         $data->delete();
+        Cache::forget('parts');
         return response()->json(['message' => 'Part data deleted successfully']);
     }
 }

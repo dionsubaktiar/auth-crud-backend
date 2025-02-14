@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class UnitController extends Controller
@@ -22,7 +23,9 @@ class UnitController extends Controller
 
     public function getAll()
     {
-        $data = unit::select('id', 'nopol')->orderBy('id')->get();
+        $data = Cache::remember('units', 60, function () {
+            return unit::select('id', 'nopol')->orderBy('id')->get();
+        });
         return response()->json([
             'messages' => 'Unit data fetched successfully',
             'data' => $data,
@@ -63,6 +66,7 @@ class UnitController extends Controller
         }
 
         $data = unit::create($request->all());
+        Cache::forget('units');
         return response()->json(['message' => 'Unit data registered successfully.', 'data' => $data], 201);
     }
 
@@ -118,6 +122,7 @@ class UnitController extends Controller
         }
 
         $unit->update($request->all());
+        Cache::forget('units');
         return response()->json(['message' => 'Unit data updated successfully.', 'data' => $unit], 200);
     }
 
@@ -132,6 +137,7 @@ class UnitController extends Controller
             return response()->json(['message' => 'Unit data cant be found.'], 404);
         }
         $data->delete();
+        Cache::forget('units');
         return response()->json(['message' => 'Unit data deleted successfully', 200]);
     }
 }
