@@ -24,7 +24,7 @@ class PartController extends Controller
     public function getAll()
     {
         $data = Cache::remember('parts', 60, function () {
-            return part::select('id', 'nama_barang', 'part_number')->orderBy('id')->get();
+            return part::select('id', 'nama_barang', 'merk')->orderBy('id')->get();
         });
         return response()->json([
             'messages' => 'Part data fetched successfully',
