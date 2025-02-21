@@ -160,26 +160,28 @@ class InvoiceController extends Controller
             $data->package_items = $items;
         }
 
-        // Decode the id_part JSON
-        $idParts = json_decode($data->id_part, true);
-        $partsDetails = [];
+        if ($data->id_part) {
+            // Decode the id_part JSON
+            $idParts = json_decode($data->id_part, true);
+            $partsDetails = [];
 
-        // Find each part and attach its details
-        foreach ($idParts as $part) {
-            $partDetails = part::find($part['id_part']);
-            if (!$partDetails) {
-                return response()->json(['message' => "Part with ID {$part['id_part']} not found"], 404);
+            // Find each part and attach its details
+            foreach ($idParts as $part) {
+                $partDetails = part::find($part['id_part']);
+                if (!$partDetails) {
+                    return response()->json(['message' => "Part with ID {$part['id_part']} not found"], 404);
+                }
+                $partsDetails[] = [
+                    'id_part' => $partDetails->id,
+                    'name' => $partDetails->nama_barang,
+                    'quantity' => $part['qty'],
+                    'total_price' => ($partDetails->harga * $part['qty']) + $partDetails->jasa // Assuming `harga_barang` exists
+                ];
             }
-            $partsDetails[] = [
-                'id_part' => $partDetails->id,
-                'name' => $partDetails->nama_barang,
-                'quantity' => $part['qty'],
-                'total_price' => ($partDetails->harga * $part['qty']) + $partDetails->jasa // Assuming `harga_barang` exists
-            ];
-        }
 
-        // Add parts details to the response
-        $data->parts = $partsDetails;
+            // Add parts details to the response
+            $data->parts = $partsDetails;
+        }
 
         return response()->json([
             'message' => 'Invoice data found',
