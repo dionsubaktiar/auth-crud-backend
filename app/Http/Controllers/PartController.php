@@ -30,7 +30,6 @@ class PartController extends Controller
             'messages' => 'Part data fetched successfully',
             'data' => $data,
         ], 200);
-        // return part::all();
     }
 
     /**
@@ -48,6 +47,7 @@ class PartController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'part_number' => 'string',
+            'nama_barang' => 'required|string',
             'merk' => 'required|string',
             'kendaraan' => 'required|string',
             'harga' => 'required|numeric',
@@ -55,12 +55,16 @@ class PartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
         }
 
         $data = part::create($request->all());
         Cache::forget('parts');
-        return response()->json(['message' => 'Part data created successfully', 201]);
+        return response()->json([
+            'message' => 'Part data created successfully'
+        ], 201);
     }
 
     /**
@@ -70,7 +74,9 @@ class PartController extends Controller
     {
         $data = part::find($id);
         if (!$data) {
-            return response()->json(['message' => 'Part data cant be found'], 404);
+            return response()->json([
+                'message' => 'Part data cant be found'
+            ], 404);
         }
         return response()->json(['data' => $data], 200);
     }
@@ -88,11 +94,14 @@ class PartController extends Controller
         $data = part::find($id);
 
         if (!$data) {
-            return response()->json(['message' => 'Part data cant be found'], 404);
+            return response()->json([
+                'message' => 'Part data cant be found'
+            ], 404);
         }
 
         $validator = Validator::make($request->all(), [
             'part_number' => 'string',
+            'nama_barang' => 'required|string',
             'merk' => 'required|string',
             'kendaraan' => 'required|string',
             'harga' => 'required|numeric',
@@ -119,10 +128,14 @@ class PartController extends Controller
         $data = part::find($id);
 
         if (!$data) {
-            return response()->json(['message' => 'Part data cant be found'], 404);
+            return response()->json([
+                'message' => 'Part data cant be found'
+            ], 404);
         }
         $data->delete();
         Cache::forget('parts');
-        return response()->json(['message' => 'Part data deleted successfully']);
+        return response()->json([
+            'message' => 'Part data deleted successfully'
+        ]);
     }
 }
