@@ -283,10 +283,10 @@ class InvoiceController extends Controller
         $data = invoice::find($id);
 
         if (!$data) {
-            return response()->json(['message' => 'Unit data cant be found.'], 404);
+            return response()->json(['message' => 'Invoice data cant be found.'], 404);
         }
         $data->delete();
-        return response()->json(['message' => 'Unit data deleted successfully', 200]);
+        return response()->json(['message' => 'Invoice data deleted successfully', 200]);
     }
 
     public function accept_status_spk($id)
@@ -294,7 +294,7 @@ class InvoiceController extends Controller
         $data = invoice::find($id);
 
         if (!$data) {
-            return response()->json(['message' => 'Unit data cant be found.'], 404);
+            return response()->json(['message' => 'Invoice data cant be found.'], 404);
         }
 
         $data->update([
@@ -309,7 +309,7 @@ class InvoiceController extends Controller
         $data = invoice::find($id);
 
         if (!$data) {
-            return response()->json(['message' => 'Unit data cant be found.'], 404);
+            return response()->json(['message' => 'Invoice data cant be found.'], 404);
         }
 
         $data->update([
@@ -325,7 +325,7 @@ class InvoiceController extends Controller
         $data = invoice::find($id);
 
         if (!$data) {
-            return response()->json(['message' => 'Unit data cant be found.'], 404);
+            return response()->json(['message' => 'Invoice data cant be found.'], 404);
         }
 
         $data->update([
@@ -340,7 +340,7 @@ class InvoiceController extends Controller
     {
         $data = invoice::find($id);
         if (!$data) {
-            return response()->json(['message' => 'Unit data cant be found.'], 404);
+            return response()->json(['message' => 'Invoice data cant be found.'], 404);
         }
 
         $data->update([
